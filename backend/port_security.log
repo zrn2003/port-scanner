@@ -1,0 +1,240 @@
+2025-09-08 12:03:37,025 - INFO - Detected operating system: windows
+2025-09-08 12:03:37,027 - INFO - ============================================================
+2025-09-08 12:03:37,027 - INFO - STARTING PORT SECURITY SCAN
+2025-09-08 12:03:37,027 - INFO - ============================================================
+2025-09-08 12:03:37,028 - INFO - Starting Nmap scan on 127.0.0.1
+2025-09-08 12:03:59,555 - INFO - Found 18 open ports: [135, 445, 1521, 3306, 5040, 5354, 5560, 5580, 33060, 49664, 49665, 49666, 49667, 49668, 49670, 49672, 49679, 49692]
+2025-09-08 12:03:59,557 - WARNING - Found 2 potentially vulnerable ports
+2025-09-08 12:03:59,558 - INFO - Processing vulnerable port: 445 (SMB)
+2025-09-08 12:04:12,977 - ERROR - Update failed for port 445: No package mapping found for port 445 on windows
+2025-09-08 12:04:35,231 - ERROR - Update failed for port 445: No package mapping found for port 445 on windows
+2025-09-08 12:04:45,036 - ERROR - Update failed for port 445: No package mapping found for port 445 on windows
+2025-09-08 12:04:45,039 - ERROR - Failed to update port 445 after 3 attempts
+2025-09-08 12:04:45,040 - INFO - Processing vulnerable port: 3306 (MySQL)
+2025-09-08 12:05:00,552 - INFO - Updating Windows service: MySQL
+2025-09-08 12:05:03,761 - ERROR - Update failed for port 3306: Windows update failed: Install-WindowsUpdate : The term 'Install-WindowsUpdate' is not recognized as the name of a cmdlet, 
+function, script file, or operable program. Check the spelling of the name, or if a path was included, 
+verify that the path is correct and try again.
+At line:1 char:1
++ Install-WindowsUpdate -AcceptAll -AutoReboot:$false -Confirm:$false
++ ~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (Install-WindowsUpdate:String) [], CommandNotFoundExcepti 
+   on
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+
+2025-09-08 12:05:15,366 - INFO - Updating Windows service: MySQL
+2025-09-08 12:05:16,955 - ERROR - Update failed for port 3306: Windows update failed: Install-WindowsUpdate : The term 'Install-WindowsUpdate' is not recognized as the name of a cmdlet, 
+function, script file, or operable program. Check the spelling of the name, or if a path was included, 
+verify that the path is correct and try again.
+At line:1 char:1
++ Install-WindowsUpdate -AcceptAll -AutoReboot:$false -Confirm:$false
++ ~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (Install-WindowsUpdate:String) [], CommandNotFoundExcepti 
+   on
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+
+2025-09-08 12:05:19,235 - INFO - Updating Windows service: MySQL
+2025-09-08 12:05:20,847 - ERROR - Update failed for port 3306: Windows update failed: Install-WindowsUpdate : The term 'Install-WindowsUpdate' is not recognized as the name of a cmdlet, 
+function, script file, or operable program. Check the spelling of the name, or if a path was included, 
+verify that the path is correct and try again.
+At line:1 char:1
++ Install-WindowsUpdate -AcceptAll -AutoReboot:$false -Confirm:$false
++ ~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (Install-WindowsUpdate:String) [], CommandNotFoundExcepti 
+   on
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+
+2025-09-08 12:05:20,849 - ERROR - Failed to update port 3306 after 3 attempts
+2025-09-08 12:05:20,849 - INFO - Running final verification scan...
+2025-09-08 12:05:20,855 - INFO - Starting Nmap scan on 127.0.0.1
+2025-09-08 12:05:34,956 - INFO - Found 18 open ports: [135, 445, 1521, 3306, 5040, 5354, 5560, 5580, 33060, 49664, 49665, 49666, 49667, 49668, 49670, 49672, 49679, 49692]
+2025-09-08 12:05:34,957 - WARNING - Final scan: 2 vulnerable ports still open
+2025-09-08 12:05:34,957 - WARNING -   - Port 445: SMB
+2025-09-08 12:05:34,957 - WARNING -   - Port 3306: MySQL
+2025-09-08 12:05:34,958 - INFO - ============================================================
+2025-09-08 12:05:34,958 - INFO - PORT SECURITY SCAN COMPLETED
+2025-09-08 12:05:34,958 - INFO - ============================================================
+2025-09-08 12:09:15,626 - INFO - Detected operating system: windows
+2025-09-08 12:09:15,628 - INFO - ============================================================
+2025-09-08 12:09:15,629 - INFO - STARTING PORT SECURITY SCAN
+2025-09-08 12:09:15,629 - INFO - ============================================================
+2025-09-08 12:09:15,630 - INFO - Starting Nmap scan on 127.0.0.1
+2025-09-08 12:09:29,510 - INFO - Found 18 open ports: [135, 445, 1521, 3306, 5040, 5354, 5560, 5580, 33060, 49664, 49665, 49666, 49667, 49668, 49670, 49672, 49679, 49692]
+2025-09-08 12:09:29,512 - WARNING - Found 2 potentially vulnerable ports
+2025-09-08 12:09:29,512 - INFO - Processing vulnerable port: 445 (SMB)
+2025-09-08 12:09:44,717 - ERROR - Update failed for port 445: No package mapping found for port 445 on windows
+2025-09-08 12:09:50,053 - ERROR - Update failed for port 445: No package mapping found for port 445 on windows
+2025-09-08 12:09:53,555 - ERROR - Update failed for port 445: No package mapping found for port 445 on windows
+2025-09-08 12:09:53,558 - ERROR - Failed to update port 445 after 3 attempts
+2025-09-08 12:09:53,560 - INFO - Processing vulnerable port: 3306 (MySQL)
+2025-09-08 12:10:22,219 - INFO - Updating Windows service: MySQL
+2025-09-08 12:10:24,038 - ERROR - Update failed for port 3306: Windows update failed: Install-WindowsUpdate : The term 'Install-WindowsUpdate' is not recognized as the name of a cmdlet, function, script 
+file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and 
+try again.
+At line:1 char:1
++ Install-WindowsUpdate -AcceptAll -AutoReboot:$false -Confirm:$false
++ ~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (Install-WindowsUpdate:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+
+2025-09-08 12:10:32,314 - INFO - Updating Windows service: MySQL
+2025-09-08 12:10:33,790 - ERROR - Update failed for port 3306: Windows update failed: Install-WindowsUpdate : The term 'Install-WindowsUpdate' is not recognized as the name of a cmdlet, function, script 
+file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and 
+try again.
+At line:1 char:1
++ Install-WindowsUpdate -AcceptAll -AutoReboot:$false -Confirm:$false
++ ~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (Install-WindowsUpdate:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+
+2025-09-08 12:10:51,660 - INFO - User chose to backup current state for port 3306
+2025-09-08 12:10:51,661 - ERROR - Failed to update port 3306 after 3 attempts
+2025-09-08 12:10:51,661 - INFO - Running final verification scan...
+2025-09-08 12:10:51,661 - INFO - Starting Nmap scan on 127.0.0.1
+2025-09-08 12:11:04,281 - INFO - Found 18 open ports: [135, 445, 1521, 3306, 5040, 5354, 5560, 5580, 33060, 49664, 49665, 49666, 49667, 49668, 49670, 49672, 49679, 49692]
+2025-09-08 12:11:04,284 - WARNING - Final scan: 2 vulnerable ports still open
+2025-09-08 12:11:04,285 - WARNING -   - Port 445: SMB
+2025-09-08 12:11:04,285 - WARNING -   - Port 3306: MySQL
+2025-09-08 12:11:04,286 - INFO - ============================================================
+2025-09-08 12:11:04,286 - INFO - PORT SECURITY SCAN COMPLETED
+2025-09-08 12:11:04,286 - INFO - ============================================================
+2025-09-08 12:13:47,102 - INFO - Detected operating system: windows
+2025-09-08 12:13:47,102 - INFO - ============================================================
+2025-09-08 12:13:47,102 - INFO - STARTING PORT SECURITY SCAN
+2025-09-08 12:13:47,103 - INFO - ============================================================
+2025-09-08 12:13:47,103 - INFO - Starting Nmap scan on 127.0.0.1
+2025-09-08 12:13:51,060 - INFO - Found 18 open ports: [135, 445, 1521, 3306, 5040, 5354, 5560, 5580, 33060, 49664, 49665, 49666, 49667, 49668, 49670, 49672, 49679, 49692]
+2025-09-08 12:13:51,060 - WARNING - Found 2 potentially vulnerable ports
+2025-09-08 12:13:51,060 - INFO - Processing vulnerable port: 445 (SMB)
+2025-09-08 12:13:55,743 - ERROR - Update failed for port 445: No package mapping found for port 445 on windows
+2025-09-08 12:13:58,066 - ERROR - Update failed for port 445: No package mapping found for port 445 on windows
+2025-09-08 12:13:59,013 - ERROR - Update failed for port 445: No package mapping found for port 445 on windows
+2025-09-08 12:13:59,013 - ERROR - Failed to update port 445 after 3 attempts
+2025-09-08 12:13:59,013 - INFO - Processing vulnerable port: 3306 (MySQL)
+2025-09-08 12:14:05,659 - INFO - Updating Windows service: MySQL
+2025-09-08 12:14:06,005 - ERROR - Update failed for port 3306: Windows update failed: Install-WindowsUpdate : The term 'Install-WindowsUpdate' is not recognized as the name of a cmdlet, function, script 
+file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and 
+try again.
+At line:1 char:1
++ Install-WindowsUpdate -AcceptAll -AutoReboot:$false -Confirm:$false
++ ~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (Install-WindowsUpdate:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+
+2025-09-08 12:14:09,046 - INFO - Updating Windows service: MySQL
+2025-09-08 12:14:09,342 - ERROR - Update failed for port 3306: Windows update failed: Install-WindowsUpdate : The term 'Install-WindowsUpdate' is not recognized as the name of a cmdlet, function, script 
+file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and 
+try again.
+At line:1 char:1
++ Install-WindowsUpdate -AcceptAll -AutoReboot:$false -Confirm:$false
++ ~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (Install-WindowsUpdate:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+
+2025-09-08 12:14:10,701 - INFO - Updating Windows service: MySQL
+2025-09-08 12:14:10,975 - ERROR - Update failed for port 3306: Windows update failed: Install-WindowsUpdate : The term 'Install-WindowsUpdate' is not recognized as the name of a cmdlet, function, script 
+file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and 
+try again.
+At line:1 char:1
++ Install-WindowsUpdate -AcceptAll -AutoReboot:$false -Confirm:$false
++ ~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (Install-WindowsUpdate:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+
+2025-09-08 12:14:10,975 - ERROR - Failed to update port 3306 after 3 attempts
+2025-09-08 12:14:10,975 - INFO - Running final verification scan...
+2025-09-08 12:14:10,976 - INFO - Starting Nmap scan on 127.0.0.1
+2025-09-08 12:14:15,052 - INFO - Found 18 open ports: [135, 445, 1521, 3306, 5040, 5354, 5560, 5580, 33060, 49664, 49665, 49666, 49667, 49668, 49670, 49672, 49679, 49692]
+2025-09-08 12:14:15,053 - WARNING - Final scan: 2 vulnerable ports still open
+2025-09-08 12:14:15,053 - WARNING -   - Port 445: SMB
+2025-09-08 12:14:15,053 - WARNING -   - Port 3306: MySQL
+2025-09-08 12:14:15,053 - INFO - ============================================================
+2025-09-08 12:14:15,053 - INFO - PORT SECURITY SCAN COMPLETED
+2025-09-08 12:14:15,054 - INFO - ============================================================
+2025-09-09 11:37:14,496 - INFO - Detected operating system: windows
+2025-09-09 11:37:14,497 - INFO - ============================================================
+2025-09-09 11:37:14,497 - INFO - STARTING PORT SECURITY SCAN
+2025-09-09 11:37:14,497 - INFO - ============================================================
+2025-09-09 11:37:14,497 - INFO - Starting Nmap scan on 127.0.0.1
+2025-09-09 11:37:20,362 - INFO - Found 18 open ports: [135, 445, 1521, 3306, 5040, 5354, 5560, 5580, 33060, 49664, 49665, 49666, 49667, 49668, 49670, 49672, 49679, 49692]
+2025-09-09 11:37:20,363 - WARNING - Found 2 potentially vulnerable ports
+2025-09-09 11:37:20,364 - INFO - Processing vulnerable port: 445 (SMB)
+2025-09-09 11:37:25,607 - INFO - Attempting to close port 445 on Windows
+2025-09-09 11:37:25,857 - ERROR - Closure failed for port 445: Failed to block port 445: 
+2025-09-09 11:37:41,723 - INFO - Attempting to close port 445 on Windows
+2025-09-09 11:37:41,850 - ERROR - Closure failed for port 445: Failed to block port 445: 
+2025-09-09 11:37:46,470 - ERROR - Failed to close port 445 after 3 attempts
+2025-09-09 11:37:46,470 - INFO - Processing vulnerable port: 3306 (MySQL)
+2025-09-09 11:37:50,649 - INFO - Attempting to close port 3306 on Windows
+2025-09-09 11:37:50,776 - ERROR - Closure failed for port 3306: Failed to block port 3306: 
+2025-09-09 11:37:56,945 - INFO - Attempting to close port 3306 on Windows
+2025-09-09 11:37:57,061 - ERROR - Closure failed for port 3306: Failed to block port 3306: 
+2025-09-09 11:38:02,756 - INFO - Attempting to close port 3306 on Windows
+2025-09-09 11:38:02,871 - ERROR - Closure failed for port 3306: Failed to block port 3306: 
+2025-09-09 11:38:02,871 - ERROR - Failed to close port 3306 after 3 attempts
+2025-09-09 11:38:02,871 - INFO - Running final verification scan...
+2025-09-09 11:38:02,872 - INFO - Starting Nmap scan on 127.0.0.1
+2025-09-09 11:38:06,890 - INFO - Found 18 open ports: [135, 445, 1521, 3306, 5040, 5354, 5560, 5580, 33060, 49664, 49665, 49666, 49667, 49668, 49670, 49672, 49679, 49692]
+2025-09-09 11:38:06,890 - WARNING - Final scan: 2 vulnerable ports still open
+2025-09-09 11:38:06,891 - WARNING -   - Port 445: SMB
+2025-09-09 11:38:06,891 - WARNING -   - Port 3306: MySQL
+2025-09-09 11:38:06,891 - INFO - ============================================================
+2025-09-09 11:38:06,891 - INFO - PORT SECURITY SCAN COMPLETED
+2025-09-09 11:38:06,892 - INFO - ============================================================
+2025-09-09 11:49:52,576 - INFO - Detected operating system: windows
+2025-09-09 11:49:52,853 - INFO - Created patch cache directory: patch_cache
+2025-09-09 11:49:53,046 - INFO - Attempting to close port 9998 on Windows using multiple methods
+2025-09-09 11:49:56,191 - WARNING - Failed to block with firewall: 
+2025-09-09 11:50:16,046 - INFO - Detected operating system: windows
+2025-09-09 11:50:16,049 - INFO - Downloading patch for OpenSSH from official sources
+2025-09-09 11:51:18,389 - INFO - Patch file hash: 013b2d3aa5d9679e1e30f46b32d8078ed2d45ed80f8f98d2bec38335afdfc2ec
+2025-09-09 11:51:18,409 - INFO - Detected operating system: windows
+2025-09-09 11:51:18,426 - INFO - Detected operating system: windows
+2025-09-09 11:52:47,791 - INFO - Detected operating system: windows
+2025-09-09 11:52:47,791 - INFO - ============================================================
+2025-09-09 11:52:47,791 - INFO - STARTING PORT SECURITY SCAN
+2025-09-09 11:52:47,792 - INFO - ============================================================
+2025-09-09 11:52:47,792 - INFO - Starting Nmap scan on 127.0.0.1
+2025-09-09 11:52:51,727 - INFO - Found 18 open ports: [135, 445, 1521, 3306, 5040, 5354, 5560, 5580, 33060, 49664, 49665, 49666, 49667, 49668, 49670, 49672, 49679, 49692]
+2025-09-09 11:52:51,727 - WARNING - Found 2 potentially vulnerable ports
+2025-09-09 11:52:51,728 - INFO - Processing vulnerable port: 445 (SMB)
+2025-09-09 11:52:59,551 - ERROR - Update failed for port 445: No package mapping found for port 445 on windows
+2025-09-09 11:53:07,386 - ERROR - Update failed for port 445: No package mapping found for port 445 on windows
+2025-09-09 11:53:09,428 - ERROR - Update failed for port 445: No package mapping found for port 445 on windows
+2025-09-09 11:53:09,429 - ERROR - Failed to update port 445 after 3 attempts
+2025-09-09 11:53:09,429 - INFO - Processing vulnerable port: 3306 (MySQL)
+2025-09-09 11:53:12,382 - INFO - Attempting to close port 3306 on Windows using multiple methods
+2025-09-09 11:53:12,398 - WARNING - Failed to stop service MySQL: 
+2025-09-09 11:53:12,902 - WARNING - Failed to block with firewall: 
+2025-09-09 11:53:13,969 - ERROR - Closure failed for port 3306: Failed to close port 3306 using any method
+2025-09-09 11:53:17,506 - INFO - Attempting to close port 3306 on Windows using multiple methods
+2025-09-09 11:53:17,517 - WARNING - Failed to stop service MySQL: 
+2025-09-09 11:53:18,015 - WARNING - Failed to block with firewall: 
+2025-09-09 11:53:18,953 - ERROR - Closure failed for port 3306: Failed to close port 3306 using any method
+2025-09-09 11:53:22,249 - INFO - Attempting to close port 3306 on Windows using multiple methods
+2025-09-09 11:53:22,260 - WARNING - Failed to stop service MySQL: 
+2025-09-09 11:53:22,743 - WARNING - Failed to block with firewall: 
+2025-09-09 11:53:23,674 - ERROR - Closure failed for port 3306: Failed to close port 3306 using any method
+2025-09-09 11:53:23,674 - ERROR - Failed to close port 3306 after 3 attempts
+2025-09-09 11:53:23,674 - INFO - Running final verification scan...
+2025-09-09 11:53:23,674 - INFO - Starting Nmap scan on 127.0.0.1
+2025-09-09 11:53:27,500 - INFO - Found 18 open ports: [135, 445, 1521, 3306, 5040, 5354, 5560, 5580, 33060, 49664, 49665, 49666, 49667, 49668, 49670, 49672, 49679, 49692]
+2025-09-09 11:53:27,500 - WARNING - Final scan: 2 vulnerable ports still open
+2025-09-09 11:53:27,501 - WARNING -   - Port 445: SMB
+2025-09-09 11:53:27,501 - WARNING -   - Port 3306: MySQL
+2025-09-09 11:53:27,501 - INFO - ============================================================
+2025-09-09 11:53:27,501 - INFO - PORT SECURITY SCAN COMPLETED
+2025-09-09 11:53:27,501 - INFO - ============================================================
+2025-09-09 15:05:56,675 - INFO - Detected operating system: windows
+2025-09-09 15:05:56,732 - WARNING - Administrator privileges required to enable firewall
+2025-09-09 15:05:56,758 - WARNING - Administrator privileges required for firewall operations
+2025-09-09 15:05:56,764 - INFO - Attempting to restore port 9999 on Windows
+2025-09-09 15:05:56,775 - WARNING - Administrator privileges required for firewall operations

@@ -1,0 +1,41 @@
+# Port Security Scanner Requirements
+# Dependencies for the full-stack port security application
+
+# Backend API Dependencies
+fastapi>=0.100.0
+uvicorn[standard]>=0.20.0
+websockets>=11.0
+pydantic>=2.0.0
+python-multipart>=0.0.5
+
+# Additional utilities
+python-dotenv>=1.0.0
+aiofiles>=23.0.0
+
+# System Requirements:
+# - Nmap (Network Mapper) - for port scanning
+#   Linux: sudo apt-get install nmap
+#   Windows: Download from https://nmap.org/download.html
+#   macOS: brew install nmap
+
+# - Administrative privileges:
+#   Linux: sudo access for package management
+#   Windows: Administrator privileges for Windows Update
+
+# Python Standard Library Modules Used:
+# - subprocess (for running system commands)
+# - platform (for OS detection)
+# - logging (for comprehensive logging)
+# - json (for data handling)
+# - time (for delays and timestamps)
+# - sys (for system operations)
+# - os (for OS operations)
+# - datetime (for timestamp formatting)
+# - typing (for type hints)
+# - re (for regular expressions)
+# - hashlib (for patch integrity verification)
+# - urllib (for downloading patches)
+# - ssl (for secure connections)
+# - uuid (for operation IDs)
+# - threading (for background tasks)
+# - asyncio (for async operations)
