@@ -109,6 +109,20 @@ class PortSecurityScanner:
         except Exception as e:
             self.logger.error(f"Failed to request elevation: {e}")
             return False
+
+    def ensure_admin_privileges(self) -> bool:
+        """Ensure admin privileges are available for critical operations"""
+        if self.is_admin:
+            self.logger.info("✅ Administrator privileges confirmed")
+            return True
+        else:
+            self.logger.warning("⚠️ Administrator privileges not available")
+            self.logger.warning("Some operations may fail:")
+            self.logger.warning("  • Windows Firewall rule creation")
+            self.logger.warning("  • Service control operations")
+            self.logger.warning("  • System-level port blocking")
+            self.logger.warning("  • Patch installation")
+            return False
             
     def get_distribution_info(self) -> Dict[str, str]:
         """Get detailed distribution information for Linux systems"""
@@ -298,6 +312,7 @@ class PortSecurityScanner:
             "windows": {
                 21: "Microsoft-IIS-FTP",
                 23: "Telnet",
+                445: "Server",  # SMB/CIFS service
                 3389: "TermService",
                 80: "W3SVC",
                 443: "W3SVC",
@@ -442,30 +457,185 @@ class PortSecurityScanner:
                 return True, f"Port {port} closed using: {', '.join(success_methods)}"
             else:
                 return False, f"Failed to close port {port} using any method. Root privileges may be required for full functionality."
-                
+                    
         except Exception as e:
             return False, f"Exception during port closure: {str(e)}"
             
     def apply_security_update_windows(self, service_name: str) -> Tuple[bool, str]:
-        """Apply security updates on Windows using PowerShell"""
+        """Apply security updates on Windows using PowerShell with admin privileges"""
         try:
             self.logger.info(f"Updating Windows service: {service_name}")
             
-            # PowerShell command to install Windows updates
-            ps_cmd = [
-                "powershell", "-Command",
-                f"Install-WindowsUpdate -AcceptAll -AutoReboot:$false -Confirm:$false"
-            ]
+            # Check admin privileges for update operations
+            if not self.is_admin:
+                self.logger.warning("Admin privileges required for Windows updates")
+                return False, "Administrator privileges required for Windows updates"
             
+            # Enhanced PowerShell script for Windows updates
+            ps_script = """
+            try {
+                # Check for Windows updates
+                $Session = New-Object -ComObject Microsoft.Update.Session
+                $Searcher = $Session.CreateUpdateSearcher()
+                $SearchResult = $Searcher.Search("IsInstalled=0 and Type='Software' and IsHidden=0")
+                
+                if ($SearchResult.Updates.Count -gt 0) {
+                    Write-Host "Found $($SearchResult.Updates.Count) available updates"
+                    
+                    # Download and install updates
+                    $UpdatesToDownload = New-Object -ComObject Microsoft.Update.UpdateColl
+                    foreach ($Update in $SearchResult.Updates) {
+                        if ($Update.EulaAccepted -eq 0) {
+                            $Update.AcceptEula()
+                        }
+                        $UpdatesToDownload.Add($Update)
+                        Write-Host "Queued update: $($Update.Title)"
+                    }
+                    
+                    # Download updates
+                    $Downloader = $Session.CreateUpdateDownloader()
+                    $Downloader.Updates = $UpdatesToDownload
+                    $DownloadResult = $Downloader.Download()
+                    
+                    if ($DownloadResult.ResultCode -eq 2) {
+                        Write-Host "Updates downloaded successfully"
+                        
+                        # Install updates
+                        $Installer = $Session.CreateUpdateInstaller()
+                        $Installer.Updates = $UpdatesToDownload
+                        $InstallResult = $Installer.Install()
+                        
+                        if ($InstallResult.ResultCode -eq 2) {
+                            Write-Host "Updates installed successfully"
+                            exit 1
+                        } else {
+                            Write-Host "Update installation failed"
+                            exit 0
+                        }
+                    } else {
+                        Write-Host "Update download failed"
+                        exit 0
+                    }
+                } else {
+                    Write-Host "No updates available"
+                    exit 0
+                }
+            } catch {
+                Write-Error "Failed to process Windows updates: $_"
+                exit 0
+            }
+            """
+            
+            ps_cmd = ["powershell", "-ExecutionPolicy", "Bypass", "-Command", ps_script]
             result = subprocess.run(ps_cmd, capture_output=True, text=True)
             
-            if result.returncode == 0:
-                return True, "Windows update successful"
+            if result.returncode == 1:
+                return True, f"Windows updates processed successfully: {result.stdout}"
             else:
-                return False, f"Windows update failed: {result.stderr}"
+                return False, f"Windows update failed or no updates available: {result.stderr}"
                 
         except Exception as e:
             return False, f"Exception during Windows update: {str(e)}"
+
+    def apply_generic_windows_updates(self, port: int, service: str) -> Tuple[bool, str]:
+        """Apply generic Windows security updates for ports without specific package mappings"""
+        try:
+            self.logger.info(f"Applying generic Windows security updates for port {port} ({service})")
+            
+            # Check admin privileges for update operations
+            if not self.is_admin:
+                self.logger.warning("Admin privileges required for Windows updates")
+                return False, "Administrator privileges required for Windows updates"
+            
+            # Enhanced PowerShell script for generic Windows updates
+            ps_script = """
+            try {
+                # Check for Windows updates
+                $Session = New-Object -ComObject Microsoft.Update.Session
+                $Searcher = $Session.CreateUpdateSearcher()
+                $SearchResult = $Searcher.Search("IsInstalled=0 and Type='Software' and IsHidden=0")
+                
+                if ($SearchResult.Updates.Count -gt 0) {
+                    Write-Host "Found $($SearchResult.Updates.Count) available updates"
+                    
+                    # Download and install updates
+                    $UpdatesToDownload = New-Object -ComObject Microsoft.Update.UpdateColl
+                    foreach ($Update in $SearchResult.Updates) {
+                        if ($Update.EulaAccepted -eq 0) {
+                            $Update.AcceptEula()
+                        }
+                        $UpdatesToDownload.Add($Update)
+                        Write-Host "Queued update: $($Update.Title)"
+                    }
+                    
+                    # Download updates
+                    $Downloader = $Session.CreateUpdateDownloader()
+                    $Downloader.Updates = $UpdatesToDownload
+                    $DownloadResult = $Downloader.Download()
+                    
+                    if ($DownloadResult.ResultCode -eq 2) {
+                        Write-Host "Updates downloaded successfully"
+                        
+                        # Install updates
+                        $Installer = $Session.CreateUpdateInstaller()
+                        $Installer.Updates = $UpdatesToDownload
+                        $InstallResult = $Installer.Install()
+                        
+                        if ($InstallResult.ResultCode -eq 2) {
+                            Write-Host "Updates installed successfully"
+                            exit 1
+                        } else {
+                            Write-Host "Update installation failed"
+                            exit 0
+                        }
+                    } else {
+                        Write-Host "Update download failed"
+                        exit 0
+                    }
+                } else {
+                    Write-Host "No updates available"
+                    exit 0
+                }
+            } catch {
+                Write-Error "Failed to process Windows updates: $_"
+                exit 0
+            }
+            """
+            
+            ps_cmd = ["powershell", "-ExecutionPolicy", "Bypass", "-Command", ps_script]
+            result = subprocess.run(ps_cmd, capture_output=True, text=True)
+            
+            if result.returncode == 1:
+                return True, f"Generic Windows updates processed successfully: {result.stdout}"
+            else:
+                return False, f"Generic Windows update failed or no updates available: {result.stderr}"
+                
+        except Exception as e:
+            return False, f"Exception during generic Windows update: {str(e)}"
+
+    def apply_generic_linux_updates(self, port: int, service: str) -> Tuple[bool, str]:
+        """Apply generic Linux security updates for ports without specific package mappings"""
+        try:
+            self.logger.info(f"Applying generic Linux security updates for port {port} ({service})")
+            
+            # Update package list first
+            update_cmd = ["sudo", "apt-get", "update"]
+            result = subprocess.run(update_cmd, capture_output=True, text=True)
+            
+            if result.returncode != 0:
+                return False, f"Failed to update package list: {result.stderr}"
+                
+            # Install security updates
+            upgrade_cmd = ["sudo", "apt-get", "upgrade", "-y"]
+            result = subprocess.run(upgrade_cmd, capture_output=True, text=True)
+            
+            if result.returncode == 0:
+                return True, "Generic Linux security updates applied successfully"
+            else:
+                return False, f"Generic Linux update failed: {result.stderr}"
+                
+        except Exception as e:
+            return False, f"Exception during generic Linux update: {str(e)}"
             
     def find_windows_processes_using_port(self, port: int) -> List[str]:
         """Find Windows processes using a specific port"""
@@ -495,9 +665,9 @@ class PortSecurityScanner:
             self.logger.info(f"Attempting to close port {port} on Windows using multiple methods")
             success_methods = []
             
-            # Method 1: Try to stop the Windows service (works without admin for some services)
+            # Method 1: Try to stop the Windows service (enhanced with admin privileges)
             service_mapping = {
-                445: "Server",
+                445: "Server",  # SMB/CIFS service
                 3389: "TermService", 
                 21: "FTPSVC",
                 23: "Telnet",
@@ -514,19 +684,19 @@ class PortSecurityScanner:
             win_service = service_mapping.get(port)
             if win_service:
                 try:
-                    # Stop the service
-                    stop_cmd = ["sc", "stop", win_service]
-                    result = subprocess.run(stop_cmd, capture_output=True, text=True)
-                    
-                    if result.returncode == 0:
-                        # Disable the service
-                        disable_cmd = ["sc", "config", win_service, "start=", "disabled"]
-                        subprocess.run(disable_cmd, capture_output=True, text=True)
-                        success_methods.append(f"stopped service {win_service}")
+                    # Enhanced service control with admin privileges
+                    service_success = self.control_windows_service(win_service, "stop")
+                    if service_success:
+                        # Also disable the service to prevent auto-start
+                        disable_success = self.control_windows_service(win_service, "disable")
+                        if disable_success:
+                            success_methods.append(f"stopped and disabled service {win_service}")
                     else:
-                        self.logger.warning(f"Failed to stop service {win_service}: {result.stderr}")
+                        success_methods.append(f"stopped service {win_service}")
                 except Exception as e:
-                    self.logger.warning(f"Exception stopping service {win_service}: {e}")
+                    self.logger.warning(f"Exception controlling service {win_service}: {e}")
+            else:
+                self.logger.info(f"No specific service mapping for port {port} - will use alternative methods")
             
             # Method 2: Kill processes using the port (works without admin for user processes)
             try:
@@ -537,6 +707,10 @@ class PortSecurityScanner:
                         result = subprocess.run(kill_cmd, capture_output=True, text=True)
                         if result.returncode == 0:
                             success_methods.append(f"killed process {pid}")
+                        else:
+                            self.logger.warning(f"Failed to kill process {pid}: {result.stderr}")
+                else:
+                    self.logger.info(f"No processes found using port {port}")
             except Exception as e:
                 self.logger.warning(f"Exception killing processes: {e}")
             
@@ -563,6 +737,12 @@ class PortSecurityScanner:
             bind_success = self.bind_port_to_prevent_usage(port)
             if bind_success:
                 success_methods.append("bound port to prevent usage")
+            
+            # Method 7: Try to disable the port using Windows Registry (requires admin)
+            if self.is_admin:
+                reg_success = self.disable_port_via_registry(port)
+                if reg_success:
+                    success_methods.append("disabled via registry")
             
             if success_methods:
                 return True, f"Port {port} closed using: {', '.join(success_methods)}"
@@ -851,13 +1031,143 @@ class PortSecurityScanner:
         except Exception as e:
             self.logger.error(f"Exception binding to port {port}: {e}")
             return False
+
+    def control_windows_service(self, service_name: str, action: str) -> bool:
+        """Enhanced Windows service control with admin privilege handling"""
+        try:
+            if action not in ["start", "stop", "restart", "disable", "enable"]:
+                self.logger.error(f"Invalid service action: {action}")
+                return False
+            
+            # Check if admin privileges are available for service control
+            if not self.is_admin and action in ["stop", "disable", "enable"]:
+                self.logger.warning(f"Admin privileges required for service {action}")
+                return False
+            
+            # Use sc command for service control
+            if action == "disable":
+                cmd = ["sc", "config", service_name, "start=", "disabled"]
+            elif action == "enable":
+                cmd = ["sc", "config", service_name, "start=", "auto"]
+            else:
+                cmd = ["sc", action, service_name]
+            
+            result = subprocess.run(cmd, capture_output=True, text=True)
+            
+            if result.returncode == 0:
+                self.logger.info(f"Successfully {action}ed service {service_name}")
+                return True
+            else:
+                self.logger.warning(f"Failed to {action} service {service_name}: {result.stderr}")
+                return False
+                
+        except Exception as e:
+            self.logger.error(f"Exception controlling service {service_name}: {e}")
+            return False
+
+    def disable_port_via_registry(self, port: int) -> bool:
+        """Disable port via Windows Registry (requires admin privileges)"""
+        try:
+            if not self.is_admin:
+                self.logger.warning("Administrator privileges required for registry operations")
+                return False
+            
+            self.logger.info(f"Attempting to disable port {port} via Windows Registry")
+            
+            # PowerShell script to modify registry for port blocking
+            ps_script = f"""
+            try {{
+                # Disable SMB/CIFS service for port 445
+                if ({port} -eq 445) {{
+                    $regPath = "HKLM:\\SYSTEM\\CurrentControlSet\\Services\\LanmanServer"
+                    if (Test-Path $regPath) {{
+                        Set-ItemProperty -Path $regPath -Name "Start" -Value 4 -Type DWord
+                        Write-Host "Disabled SMB/CIFS service via registry"
+                        exit 1
+                    }} else {{
+                        Write-Host "SMB/CIFS service registry key not found"
+                        exit 0
+                    }}
+                }}
+                
+                # Disable RDP service for port 3389
+                if ({port} -eq 3389) {{
+                    $regPath = "HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Terminal Server"
+                    if (Test-Path $regPath) {{
+                        Set-ItemProperty -Path $regPath -Name "fDenyTSConnections" -Value 1 -Type DWord
+                        Write-Host "Disabled RDP service via registry"
+                        exit 1
+                    }} else {{
+                        Write-Host "RDP service registry key not found"
+                        exit 0
+                    }}
+                }}
+                
+                # Disable Telnet service for port 23
+                if ({port} -eq 23) {{
+                    $regPath = "HKLM:\\SYSTEM\\CurrentControlSet\\Services\\TlntSvr"
+                    if (Test-Path $regPath) {{
+                        Set-ItemProperty -Path $regPath -Name "Start" -Value 4 -Type DWord
+                        Write-Host "Disabled Telnet service via registry"
+                        exit 1
+                    }} else {{
+                        Write-Host "Telnet service registry key not found"
+                        exit 0
+                    }}
+                }}
+                
+                # For other ports, try to disable via Windows Firewall registry
+                $firewallRegPath = "HKLM:\\SYSTEM\\CurrentControlSet\\Services\\SharedAccess\\Parameters\\FirewallPolicy"
+                if (Test-Path $firewallRegPath) {{
+                    # Create a registry entry to block the port
+                    $portBlockKey = "HKLM:\\SYSTEM\\CurrentControlSet\\Services\\SharedAccess\\Parameters\\FirewallPolicy\\FirewallRules"
+                    if (Test-Path $portBlockKey) {{
+                        $ruleName = "Block_Port_{port}_Registry"
+                        $ruleValue = "v2.30|Action=Block|Active=TRUE|Dir=In|Protocol=6|LPort={port}|Name=$ruleName|Desc=Block port {port} via registry"
+                        Set-ItemProperty -Path $portBlockKey -Name $ruleName -Value $ruleValue
+                        Write-Host "Created registry firewall rule for port {port}"
+                        exit 1
+                    }}
+                }}
+                
+                Write-Host "No specific registry method available for port {port}"
+                exit 0
+            }} catch {{
+                Write-Error "Registry operation failed: $_"
+                exit 0
+            }}
+            """
+            
+            ps_cmd = ["powershell", "-ExecutionPolicy", "Bypass", "-Command", ps_script]
+            result = subprocess.run(ps_cmd, capture_output=True, text=True)
+            
+            if result.returncode == 1:
+                self.logger.info(f"Successfully disabled port {port} via registry: {result.stdout}")
+                return True
+            else:
+                self.logger.warning(f"Failed to disable port {port} via registry: {result.stderr}")
+                return False
+                
+        except Exception as e:
+            self.logger.error(f"Exception disabling port {port} via registry: {e}")
+            return False
             
     def apply_security_update(self, port: int, service: str) -> Tuple[bool, str]:
         """Apply security update based on OS and port using official sources"""
         package_name = self.get_package_name_for_port(port)
         
         if not package_name:
-            return False, f"No package mapping found for port {port} on {self.os_type}"
+            # For ports without specific package mappings, try generic security updates
+            self.logger.info(f"No specific package mapping for port {port} - attempting generic security updates")
+            
+            if self.os_type == "windows":
+                # Try to apply general Windows security updates
+                return self.apply_generic_windows_updates(port, service)
+            elif self.os_type == "linux":
+                # Try to apply general Linux security updates
+                return self.apply_generic_linux_updates(port, service)
+            else:
+                return False, f"No package mapping found for port {port} on {self.os_type}"
         
         # First, check for official patches
         patch_available, patch_message = self.download_patch_from_official_source(package_name)

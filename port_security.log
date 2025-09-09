@@ -1,0 +1,17 @@
+2025-09-09 18:11:51,896 - INFO - Detected operating system: windows
+2025-09-09 18:11:52,100 - INFO - Attempting to close port 445 on Windows using multiple methods
+2025-09-09 18:11:52,119 - WARNING - Admin privileges required for service stop
+2025-09-09 18:11:57,736 - WARNING - Failed to kill process 4: ERROR: The process with PID 4 could not be terminated.
+Reason: Access is denied.
+
+
+2025-09-09 18:12:01,343 - WARNING - Failed to kill process 4: ERROR: The process with PID 4 could not be terminated.
+Reason: Access is denied.
+
+
+2025-09-09 18:12:01,346 - INFO - Trying alternative port blocking methods for port 445
+2025-09-09 18:12:04,982 - WARNING - Failed to create firewall rule without admin: 
+2025-09-09 18:12:13,325 - WARNING - Failed to create Windows Defender firewall rule: 
+2025-09-09 18:12:13,394 - WARNING - Could not bind to port 445: [WinError 10013] An attempt was made to access a socket in a way forbidden by its access permissions
+2025-09-09 18:12:13,397 - INFO - Applying generic Windows security updates for port 445 (SMB)
+2025-09-09 18:12:13,398 - WARNING - Admin privileges required for Windows updates

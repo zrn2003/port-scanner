@@ -401,6 +401,42 @@ async def system_status():
     except Exception as e:
         return {"error": str(e), "timestamp": datetime.now().isoformat()}
 
+@app.post("/system/elevate")
+async def request_admin_elevation():
+    """Request administrator privilege elevation"""
+    try:
+        scanner = PortSecurityScanner()
+        
+        if scanner.is_admin:
+            return {
+                "success": True,
+                "message": "Already running with administrator privileges",
+                "admin_privileges": True
+            }
+        
+        # Request elevation
+        elevation_requested = scanner.request_admin_elevation()
+        
+        if elevation_requested:
+            return {
+                "success": True,
+                "message": "Administrator elevation requested. Please check the new window.",
+                "admin_privileges": False
+            }
+        else:
+            return {
+                "success": False,
+                "message": "Failed to request administrator elevation",
+                "admin_privileges": False
+            }
+            
+    except Exception as e:
+        return {
+            "success": False,
+            "message": f"Error requesting elevation: {str(e)}",
+            "admin_privileges": False
+        }
+
 @app.post("/scan/start")
 async def start_scan(request: ScanRequest, background_tasks: BackgroundTasks):
     """Start a new port scan"""

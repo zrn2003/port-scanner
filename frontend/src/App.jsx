@@ -50,6 +50,22 @@ function App() {
     }
   };
 
+  const requestAdminElevation = async () => {
+    try {
+      const response = await axios.post('http://localhost:8000/system/elevate');
+      if (response.data.success) {
+        toast.success(response.data.message);
+        // Refresh system status after a delay
+        setTimeout(fetchSystemStatus, 2000);
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.error('Failed to request admin elevation:', error);
+      toast.error('Failed to request administrator privileges');
+    }
+  };
+
   const connectWebSocket = () => {
     ws = new WebSocket('ws://localhost:8000/ws');
     
@@ -355,10 +371,16 @@ function App() {
                 
                 {!systemStatus.admin_privileges && (
                   <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-                    <p className="text-sm text-yellow-800">
+                    <p className="text-sm text-yellow-800 mb-3">
                       <strong>Note:</strong> Administrator privileges are required for firewall operations. 
                       Please run the application as administrator for full functionality.
                     </p>
+                    <button
+                      onClick={requestAdminElevation}
+                      className="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors text-sm font-medium"
+                    >
+                      🔐 Request Admin Privileges
+                    </button>
                   </div>
                 )}
               </div>
